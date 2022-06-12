@@ -4,6 +4,14 @@
 
 namespace Application::Window {
 
+    /*
+    * By wrapping win32 style macros in enum classes:
+    * - user cannot declare invalid value
+    * - they cannot be combined with other, possibly incompatible style types by accident
+    * - functions can require typesafe arguments instead of DWORD
+    * - more descriptive names can be provided to user
+    * - IDE suggestions may provide user with a list of available styles
+    */
     enum class ButtonStyle {
         PushButton = BS_PUSHBUTTON,
         DefaultPushButton = BS_DEFPUSHBUTTON,

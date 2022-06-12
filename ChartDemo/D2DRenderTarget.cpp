@@ -42,8 +42,8 @@ namespace Application::Rendering {
     }
 
     D2DRenderTarget::~D2DRenderTarget() noexcept {
-        renderTarget->Release();
-        textFormat->Release();
+        if (renderTarget) renderTarget->Release();
+        if (textFormat) textFormat->Release();
     }
 
     D2DRenderTarget::D2DRenderTarget(const D2DRenderTarget& rt) : RenderTarget { rt } {

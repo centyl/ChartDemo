@@ -10,6 +10,7 @@
 
 namespace Application::Rendering {
 
+    // generates array of points belonging to a circle centered at (0, 0) with r=1, to be used for drawing in GL_TRIANGLE_FAN mode
     template <int N> constexpr std::array<Application::Util::Point<float>, N + 2> generateCircleApproximation() noexcept {
         auto fragments = N;
         auto angle = 2 * acos(-1) / fragments;

@@ -61,7 +61,7 @@ namespace Application::Rendering {
 
         glGenBuffers(1, &lineBuffer);
         glBindBuffer(GL_ARRAY_BUFFER, lineBuffer);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(Line<float>) * 1000, nullptr, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(Line<float>) * 1000, nullptr, GL_DYNAMIC_DRAW);
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -141,6 +141,7 @@ namespace Application::Rendering {
 
         pointProgram->use();
 
+        // scaling, translating and coloring done by shaders
         glUniform2f(pointProgram->getUniformLocation("windowSize"), width, height);
         glUniform1f(pointProgram->getUniformLocation("r"), r);
         glUniform4fv(pointProgram->getUniformLocation("color"), 1, (GLfloat*) (&c));
@@ -155,6 +156,9 @@ namespace Application::Rendering {
         glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
         glVertexAttribDivisor(1, 1);
 
+        // For each point this draws an instance of circle-imitating polygon.
+        // For each instance drawn, Translate value read by vertex shader changes,
+        // allowing it to calculate correct transformation of current circle instance
         glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, fragmentCount + 2, points.size());
 
         glDisableVertexAttribArray(0);
@@ -230,7 +234,7 @@ namespace Application::Rendering {
     }
 
     void OpenGlRenderTarget::drawText(const wstring& text, Size<int> size, Point<float> pos) const noexcept {
-
+        // not implemented
     }
 
 }

@@ -42,6 +42,9 @@ namespace Application::Chart {
     }
 
     void Chart::calculatePoints() noexcept {
+        // calculate uniformly spread x values, based on given range and number of samples
+        // for each of them calculate value of the function to be plotted
+        // end result is cartesian coordinates of each point to be plotted
         auto dx { (range.second - range.first) / (samples - 1) };
         this->points.clear();
         this->points.reserve(samples);
@@ -51,6 +54,8 @@ namespace Application::Chart {
             return Point<float>{ x, f(x) };
         });
 
+        // Chart's scale has to be adjusted, so that no points fall outside the visible area.
+        // To calculate correct scale, points closest to chart's borders must be found first
         auto [highestPoint, lowestPoint] { minmax_element(cbegin(points), cend(points),
                                                           [](auto&& a, auto&& b) -> bool { return a.y < b.y; }) };
         auto minY { highestPoint->y };
@@ -61,6 +66,11 @@ namespace Application::Chart {
         auto minX { leftmostPoint->x };
         auto maxX { rightmostPoint->x };
 
+        // Leftmost point should be drawn at 5% of the chart's width, to create a margin from the chart's left border
+        // Similarly, rightmost point should be drawn at 95% of the chart's width
+        // Therefore, whole plot takes 90% of width, and difference between chart's left border and 
+        // x-position of the leftmost point equals (maxX - minX) * (5% / 90%)
+        // Analogous calculations follow for remaining points and borders
         auto xyRectangle { Rectangle<float>(minX - (maxX - minX) / 18.0f, maxX + (maxX - minX) / 18.0f,
                                             minY - (maxY - minY) / 18.0f, maxY + (maxY - minY) / 18.0f) };
 
@@ -94,6 +104,7 @@ namespace Application::Chart {
                                      { linePosX, marginRectangle.bottom() + 5 } });
         }
 
+        // Transforming cartesian coordinates to screen coordinates(top-left corner = (0,0))
         transform(cbegin(this->points), cend(this->points), begin(this->points),
                   [marginRectangle, xyRectangle, xPerPixel, yPerPixel](auto&& p) -> Point<float> {
                       return { marginRectangle.left() + ((p.x - xyRectangle.left()) / xPerPixel),

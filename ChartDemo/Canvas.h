@@ -6,8 +6,6 @@
 #include "Chart.h"
 #include "D2DRenderTarget.h"
 #include "OpenGlRenderTarget.h"
-//
-//class Application::Rendering::OpenGlRenderTarget;
 
 namespace Application::Window {
     enum class RenderMethod {

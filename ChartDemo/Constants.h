@@ -5,6 +5,12 @@
 
 namespace Application {
 
+    /*
+    Values pertaining to colors or appearance of a chart could instead be stored in a Chart object,
+    with ability for a user to modify them via UI. However it would require creating better UI,
+    possibly using other libraries, which was not a purpose of this simple demo.
+    */
+
     static const Application::Util::Color labelColor { 0.3f, 0.0f, 0.8f };
     static const int labelFontSize { 8 };
     static const std::wstring labelFontFamily { L"Verdana" };
@@ -24,7 +30,5 @@ namespace Application {
     static const Application::Util::Size<int> defaultWindowSize { 600,450 };
     static const int toolbarWidth { 150 };
     static const Application::Util::Size<int> toolbarButtonSize { 130,20 };
-
-
 
 }
